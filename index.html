@@ -52,15 +52,18 @@
 
             const parts = [];
             let start = 0;
+            const paragraphs = inputText.split('\n\n'); // 使用換行符號來識別段落
 
-            // 分段邏輯
-            while (start < inputText.length) {
-                let end = start + maxLength;
-                if (end > inputText.length) end = inputText.length;
-                let part = inputText.slice(start, end);
-                parts.push(`\`\`\`markdown\n${part}\n\`\`\``); // Markdown 格式包裹
-                start = end;
-            }
+            paragraphs.forEach(paragraph => {
+                let paragraphStart = 0;
+                while (paragraphStart < paragraph.length) {
+                    let paragraphEnd = paragraphStart + maxLength;
+                    if (paragraphEnd > paragraph.length) paragraphEnd = paragraph.length;
+                    let part = paragraph.slice(paragraphStart, paragraphEnd);
+                    parts.push(`\`\`\`markdown\n${part}\n\`\`\``); // Markdown 格式包裹
+                    paragraphStart = paragraphEnd;
+                }
+            });
 
             // 顯示分段後的結果
             document.getElementById('output').innerText = parts.join('\n\n');
