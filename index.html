@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本分段工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .copy-btn {
+            padding: 5px 10px;
+            margin-top: 5px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #1976D2;
+        }
+        .output-container {
+            margin-top: 20px;
+        }
+        .part {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>文本分段工具</h1>
+    <textarea id="inputText" placeholder="請將文章粘貼到這裡"></textarea><br>
+    <button onclick="splitText()">分段</button>
+    <div id="output" class="output-container"></div>
+
+    <script>
+        const maxLength = 320; // 每段最大字數
+
+        function splitText() {
+            const inputText = document.getElementById('inputText').value;
+            if (inputText.trim() === "") {
+                alert("請輸入文本！");
+                return;
+            }
+
+            const parts = [];
+            let start = 0;
+            const paragraphs = inputText.split('\n\n'); // 使用換行符號來識別段落
+
+            paragraphs.forEach(paragraph => {
+                let paragraphStart = 0;
+                while (paragraphStart < paragraph.length) {
+                    let paragraphEnd = paragraphStart + maxLength;
+                    if (paragraphEnd > paragraph.length) paragraphEnd = paragraph.length;
+                    let part = paragraph.slice(paragraphStart, paragraphEnd);
+                    parts.push(part); // 存儲每段文本
+                    paragraphStart = paragraphEnd;
+                }
+            });
+
+            // 顯示分段後的結果並加入複製按鈕
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = ""; // 清空先前的輸出
+            parts.forEach((part, index) => {
+                const partDiv = document.createElement('div');
+                partDiv.classList.add('part');
+                partDiv.innerHTML = part;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.classList.add('copy-btn');
+                copyBtn.innerHTML = '複製';
+                copyBtn.onclick = function () {
+                    navigator.clipboard.writeText(part).then(() => {
+                        alert('已複製到剪貼簿！');
+                    });
+                };
+
+                partDiv.appendChild(copyBtn);
+                outputDiv.appendChild(partDiv);
+            });
+        }
+    </script>
+</body>
+</html>
