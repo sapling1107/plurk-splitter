@@ -63,15 +63,20 @@
             }
 
             const parts = [];
-            let paragraphs = inputText.split('\n\n\n'); // 根據段落進行分隔
+            let paragraphs = inputText.split('\n\n'); // 根據段落進行分隔
             paragraphs.forEach(paragraph => {
-                let start = 0;
-                while (start < paragraph.length) {
-                    let end = start + maxLength;
-                    if (end > paragraph.length) end = paragraph.length;
-                    let part = paragraph.slice(start, end);
-                    parts.push(part); // 將分段結果保存
-                    start = end;
+                // 如果段落的字數超過限制，則進行分段
+                if (paragraph.length > maxLength) {
+                    let start = 0;
+                    while (start < paragraph.length) {
+                        let end = start + maxLength;
+                        if (end > paragraph.length) end = paragraph.length;
+                        let part = paragraph.slice(start, end);
+                        parts.push(part); // 將分段結果保存
+                        start = end;
+                    }
+                } else {
+                    parts.push(paragraph); // 如果段落不超過最大字數，直接保存
                 }
             });
 
