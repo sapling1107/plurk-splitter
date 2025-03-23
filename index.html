@@ -35,6 +35,10 @@
         .copy-btn:hover {
             background-color: #1976D2;
         }
+        .copy-btn.copied {
+            background-color: #4CAF50; /* 已複製的按鈕顏色 */
+            color: white;
+        }
         .output-container {
             margin-top: 20px;
         }
@@ -57,7 +61,7 @@
     <h1>文本分段工具</h1>
     <textarea id="inputText" placeholder="請將文章粘貼到這裡"></textarea><br>
     <button onclick="splitText()">分段</button>
-    <button class="clear-btn" onclick="clearText()">清空</button> <!-- 新增清空按鈕 -->
+    <button class="clear-btn" onclick="clearText()">清空</button> <!-- 清空按鈕 -->
     <div id="output" class="output-container"></div>
 
     <script>
@@ -75,17 +79,20 @@
 
             const parts = [];
             let currentPart = '';
+            let currentLength = 0;
 
             // 2. 根據 <br> 來分割段落，並進行字數檢查
             let paragraphs = text.split('<br>');
-            paragraphs.forEach(paragraph => {
-                currentPart += paragraph + '<br>'; // 將每段追加到 currentPart
+            paragraphs.forEach((paragraph) => {
+                currentLength += paragraph.length; // 累計字數
 
-                // 3. 如果段落長度超過最大字數限制，則進行分割
-                if (currentPart.length > maxLength) {
-                    let temp = currentPart;
-                    currentPart = '';
-                    parts.push(temp.trim()); // 分割後保存段落
+                // 3. 如果字數達到或超過 320 字，則分割
+                if (currentLength <= maxLength) {
+                    currentPart += paragraph + '<br>';
+                } else {
+                    parts.push(currentPart.trim()); // 保存當前段落
+                    currentPart = paragraph + '<br>'; // 開始新的段落
+                    currentLength = paragraph.length; // 重設字數
                 }
             });
 
@@ -109,7 +116,12 @@
                     copyBtn.innerHTML = '複製';
                     copyBtn.onclick = function () {
                         navigator.clipboard.writeText(part.replace(/<br>/g, '\n')).then(() => { // 複製時將 <br> 替換為換行符
-                            alert('已複製到剪貼簿！');
+                            copyBtn.innerHTML = '已複製'; // 更改按鈕文本
+                            copyBtn.classList.add('copied'); // 更改按鈕樣式
+                            setTimeout(() => {
+                                copyBtn.innerHTML = '複製'; // 恢復按鈕文本
+                                copyBtn.classList.remove('copied'); // 恢復按鈕樣式
+                            }, 2000); // 兩秒後恢復
                         });
                     };
 
