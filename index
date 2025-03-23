@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 分段工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Markdown 分段工具</h1>
+    <textarea id="inputText" placeholder="請將文章粘貼到這裡"></textarea><br>
+    <button onclick="splitText()">分段</button>
+    <div id="output"></div>
+
+    <script>
+        const maxLength = 320; // 每段最大字數
+
+        function splitText() {
+            const inputText = document.getElementById('inputText').value;
+            if (inputText.trim() === "") {
+                alert("請輸入文本！");
+                return;
+            }
+
+            const parts = [];
+            let start = 0;
+
+            // 分段邏輯
+            while (start < inputText.length) {
+                let end = start + maxLength;
+                if (end > inputText.length) end = inputText.length;
+                let part = inputText.slice(start, end);
+                parts.push(`\`\`\`markdown\n${part}\n\`\`\``); // Markdown 格式包裹
+                start = end;
+            }
+
+            // 顯示分段後的結果
+            document.getElementById('output').innerText = parts.join('\n\n');
+        }
+    </script>
+</body>
+</html>
