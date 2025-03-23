@@ -67,7 +67,7 @@
             let paragraphs = text.split('<br>'); // 根據 <br> 來分段
 
             let currentPart = '';
-            paragraphs.forEach((paragraph) => {
+            paragraphs.forEach((paragraph, index) => {
                 currentPart += paragraph + '<br>'; // 每次添加段落的 <br> 換行
                 if (currentPart.length > maxLength) {
                     // 如果當前段落長度超過 320 字，則將其分割
@@ -90,7 +90,7 @@
                 parts.forEach((part, index) => {
                     const partDiv = document.createElement('div');
                     partDiv.classList.add('part');
-                    partDiv.innerHTML = part; // 使用 innerHTML 以便顯示 <br>
+                    partDiv.innerHTML = part.replace(/<br>$/, ''); // 去除末尾多餘的 <br>
 
                     const copyBtn = document.createElement('button');
                     copyBtn.classList.add('copy-btn');
