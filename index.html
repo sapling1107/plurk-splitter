@@ -65,18 +65,20 @@
             const parts = [];
             let paragraphs = inputText.split('\n\n'); // 根據段落進行分隔
             paragraphs.forEach(paragraph => {
-                // 如果段落的字數超過限制，則進行分段
+                // 若段落長度超過320字，則進行分割
                 if (paragraph.length > maxLength) {
                     let start = 0;
                     while (start < paragraph.length) {
                         let end = start + maxLength;
                         if (end > paragraph.length) end = paragraph.length;
+                        
+                        // 確保分割後的段落仍然保持語義完整
                         let part = paragraph.slice(start, end);
                         parts.push(part); // 將分段結果保存
                         start = end;
                     }
                 } else {
-                    parts.push(paragraph); // 如果段落不超過最大字數，直接保存
+                    parts.push(paragraph); // 若段落字數不超過最大字數，則直接保存
                 }
             });
 
