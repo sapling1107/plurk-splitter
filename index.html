@@ -80,23 +80,29 @@
             // 顯示分段後的結果並加入複製按鈕
             const outputDiv = document.getElementById('output');
             outputDiv.innerHTML = ""; // 清空先前的輸出
-            parts.forEach((part, index) => {
-                const partDiv = document.createElement('div');
-                partDiv.classList.add('part');
-                partDiv.innerHTML = part;
 
-                const copyBtn = document.createElement('button');
-                copyBtn.classList.add('copy-btn');
-                copyBtn.innerHTML = '複製';
-                copyBtn.onclick = function () {
-                    navigator.clipboard.writeText(part).then(() => {
-                        alert('已複製到剪貼簿！');
-                    });
-                };
+            // 確保輸出正確
+            if (parts.length > 0) {
+                parts.forEach((part, index) => {
+                    const partDiv = document.createElement('div');
+                    partDiv.classList.add('part');
+                    partDiv.innerText = part;
 
-                partDiv.appendChild(copyBtn);
-                outputDiv.appendChild(partDiv);
-            });
+                    const copyBtn = document.createElement('button');
+                    copyBtn.classList.add('copy-btn');
+                    copyBtn.innerHTML = '複製';
+                    copyBtn.onclick = function () {
+                        navigator.clipboard.writeText(part).then(() => {
+                            alert('已複製到剪貼簿！');
+                        });
+                    };
+
+                    partDiv.appendChild(copyBtn);
+                    outputDiv.appendChild(partDiv);
+                });
+            } else {
+                outputDiv.innerHTML = "未能分段，請檢查輸入的文本是否正確。";
+            }
         }
     </script>
 </body>
