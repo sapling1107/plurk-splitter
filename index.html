@@ -44,12 +44,20 @@
             border: 1px solid #ddd;
             background-color: #f9f9f9;
         }
+        .clear-btn {
+            background-color: #f44336; /* Red */
+            margin-top: 10px;
+        }
+        .clear-btn:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
     <h1>文本分段工具</h1>
     <textarea id="inputText" placeholder="請將文章粘貼到這裡"></textarea><br>
     <button onclick="splitText()">分段</button>
+    <button class="clear-btn" onclick="clearText()">清空</button> <!-- 新增清空按鈕 -->
     <div id="output" class="output-container"></div>
 
     <script>
@@ -111,9 +119,12 @@
             } else {
                 outputDiv.innerHTML = "未能分段，請檢查輸入的文本是否正確。";
             }
+        }
 
-            // 清空文本框，準備輸入新的文本
-            document.getElementById('inputText').value = '';
+        // 清空文本框
+        function clearText() {
+            document.getElementById('inputText').value = ''; // 清空文本框內容
+            document.getElementById('output').innerHTML = ''; // 清空輸出區域
         }
     </script>
 </body>
