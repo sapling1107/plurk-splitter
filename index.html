@@ -62,27 +62,31 @@
                 return;
             }
 
-            const parts = [];
-            let text = inputText.replace(/\n/g, "<br>"); // 用 <br> 取代換行符號
-            let paragraphs = text.split('<br>'); // 根據 <br> 來分段
+            // 1. 先將純文本中的每個段落（換行符分隔的部分）轉換為 <br>
+            let text = inputText.replace(/\n/g, "<br>"); // 把每個換行符替換為 <br>
 
+            const parts = [];
             let currentPart = '';
-            paragraphs.forEach((paragraph, index) => {
-                currentPart += paragraph + '<br>'; // 每次添加段落的 <br> 換行
+
+            // 2. 根據 <br> 來分割段落，並進行字數檢查
+            let paragraphs = text.split('<br>');
+            paragraphs.forEach(paragraph => {
+                currentPart += paragraph + '<br>'; // 將每段追加到 currentPart
+
+                // 3. 如果段落長度超過最大字數限制，則進行分割
                 if (currentPart.length > maxLength) {
-                    // 如果當前段落長度超過 320 字，則將其分割
                     let temp = currentPart;
                     currentPart = '';
-                    parts.push(temp.trim());
+                    parts.push(temp.trim()); // 分割後保存段落
                 }
             });
 
-            // 如果還有未處理的段落，將其添加到結果中
+            // 4. 如果還有未處理的段落，將其添加到結果中
             if (currentPart.length > 0) {
                 parts.push(currentPart.trim());
             }
 
-            // 顯示分段後的結果並加入複製按鈕
+            // 5. 顯示分段後的結果並加入複製按鈕
             const outputDiv = document.getElementById('output');
             outputDiv.innerHTML = ""; // 清空先前的輸出
 
@@ -90,13 +94,13 @@
                 parts.forEach((part, index) => {
                     const partDiv = document.createElement('div');
                     partDiv.classList.add('part');
-                    partDiv.innerHTML = part.replace(/<br>$/, ''); // 去除末尾多餘的 <br>
+                    partDiv.innerHTML = part; // 使用 innerHTML 以便顯示 <br>
 
                     const copyBtn = document.createElement('button');
                     copyBtn.classList.add('copy-btn');
                     copyBtn.innerHTML = '複製';
                     copyBtn.onclick = function () {
-                        navigator.clipboard.writeText(part.replace(/<br>/g, '\n')).then(() => { // 替換 <br> 為換行
+                        navigator.clipboard.writeText(part.replace(/<br>/g, '\n')).then(() => { // 複製時將 <br> 替換為換行符
                             alert('已複製到剪貼簿！');
                         });
                     };
