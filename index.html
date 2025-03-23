@@ -65,7 +65,7 @@
     <div id="output" class="output-container"></div>
 
     <script>
-        const maxLength = 300; // 每段最大字數
+        const maxLength = 320; // 每段最大字數
 
         function splitText() {
             const inputText = document.getElementById('inputText').value;
@@ -84,6 +84,7 @@
             // 2. 根據 <br> 來分割段落，並進行字數檢查
             let paragraphs = text.split('<br>');
             paragraphs.forEach((paragraph) => {
+                // 計算所有字符，包括空格和標點符號
                 currentLength += paragraph.length; // 累計字數
 
                 // 3. 如果字數達到或超過 320 字，則分割
