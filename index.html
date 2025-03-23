@@ -63,17 +63,15 @@
             }
 
             const parts = [];
-            let start = 0;
-            const paragraphs = inputText.split('\n\n'); // 使用換行符號來識別段落
-
+            let paragraphs = inputText.split('\n\n'); // 根據段落進行分隔
             paragraphs.forEach(paragraph => {
-                let paragraphStart = 0;
-                while (paragraphStart < paragraph.length) {
-                    let paragraphEnd = paragraphStart + maxLength;
-                    if (paragraphEnd > paragraph.length) paragraphEnd = paragraph.length;
-                    let part = paragraph.slice(paragraphStart, paragraphEnd);
-                    parts.push(part); // 存儲每段文本
-                    paragraphStart = paragraphEnd;
+                let start = 0;
+                while (start < paragraph.length) {
+                    let end = start + maxLength;
+                    if (end > paragraph.length) end = paragraph.length;
+                    let part = paragraph.slice(start, end);
+                    parts.push(part); // 將分段結果保存
+                    start = end;
                 }
             });
 
