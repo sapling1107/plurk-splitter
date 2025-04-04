@@ -65,7 +65,7 @@
     <div id="output" class="output-container"></div>
 
     <script>
-        const maxLength = 360; // 每段最大字數
+        const maxLength = 350; // 每段最大字數
 
         function splitText() {
             const inputText = document.getElementById('inputText').value;
@@ -87,7 +87,7 @@
                 // 計算所有字符，包括空格和標點符號
                 currentLength += paragraph.length; // 累計字數
 
-                // 3. 如果字數達到或超過 360 字，則分割
+                // 3. 如果字數達到或超過 350 字，則分割
                 if (currentLength <= maxLength) {
                     currentPart += paragraph + '<br>';
                 } else {
